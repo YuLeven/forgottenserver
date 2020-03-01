@@ -575,17 +575,6 @@ MagicEffectNames magicEffectNames = {
 	{"smoke",		CONST_ME_SMOKE},
 	{"insects",		CONST_ME_INSECTS},
 	{"dragonhead",		CONST_ME_DRAGONHEAD},
-	{"orcshaman",		CONST_ME_ORCSHAMAN},
-	{"orcshamanfire",	CONST_ME_ORCSHAMAN_FIRE},
-	{"thunder",		CONST_ME_THUNDER},
-	{"ferumbras",		CONST_ME_FERUMBRAS},
-	{"confettihorizontal",	CONST_ME_CONFETTI_HORIZONTAL},
-	{"confettivertical",	CONST_ME_CONFETTI_VERTICAL},
-	{"blacksmoke",		CONST_ME_BLACKSMOKE},
-	{"redsmoke",		CONST_ME_REDSMOKE},
-	{"yellowsmoke",		CONST_ME_YELLOWSMOKE},
-	{"greensmoke",		CONST_ME_GREENSMOKE},
-	{"purplesmoke",		CONST_ME_PURPLESMOKE},
 };
 
 ShootTypeNames shootTypeNames = {
@@ -630,15 +619,6 @@ ShootTypeNames shootTypeNames = {
 	{"smallearth",		CONST_ANI_SMALLEARTH},
 	{"eartharrow",		CONST_ANI_EARTHARROW},
 	{"explosion",		CONST_ANI_EXPLOSION},
-	{"cake",		CONST_ANI_CAKE},
-	{"tarsalarrow",		CONST_ANI_TARSALARROW},
-	{"vortexbolt",		CONST_ANI_VORTEXBOLT},
-	{"prismaticbolt",	CONST_ANI_PRISMATICBOLT},
-	{"crystallinearrow",	CONST_ANI_CRYSTALLINEARROW},
-	{"drillbolt",		CONST_ANI_DRILLBOLT},
-	{"envenomedarrow",	CONST_ANI_ENVENOMEDARROW},
-	{"gloothspear",		CONST_ANI_GLOOTHSPEAR},
-	{"simplearrow",		CONST_ANI_SIMPLEARROW},
 };
 
 CombatTypeNames combatTypeNames = {
@@ -695,7 +675,6 @@ SkullNames skullNames = {
 	{"white",	SKULL_WHITE},
 	{"red",		SKULL_RED},
 	{"black",	SKULL_BLACK},
-	{"orange",	SKULL_ORANGE},
 };
 
 MagicEffectClasses getMagicEffect(const std::string& strValue)
@@ -751,33 +730,6 @@ Skulls_t getSkullType(const std::string& strValue)
 	}
 	return SKULL_NONE;
 }
-
-std::string getSpecialSkillName(uint8_t skillid)
-{
-	switch (skillid) {
-		case SPECIALSKILL_CRITICALHITCHANCE:
-			return "critical hit chance";
-
-		case SPECIALSKILL_CRITICALHITAMOUNT:
-			return "critical extra damage";
-
-		case SPECIALSKILL_LIFELEECHCHANCE:
-			return "hitpoints leech chance";
-
-		case SPECIALSKILL_LIFELEECHAMOUNT:
-			return "hitpoints leech amount";
-
-		case SPECIALSKILL_MANALEECHCHANCE:
-			return "manapoints leech chance";
-
-		case SPECIALSKILL_MANALEECHAMOUNT:
-			return "mana points leech amount";
-
-		default:
-			return "unknown";
-	}
-}
-
 std::string getSkillName(uint8_t skillid)
 {
 	switch (skillid) {
@@ -1016,7 +968,7 @@ const char* getReturnMessage(ReturnValue value)
 {
 	switch (value) {
 		case RETURNVALUE_DESTINATIONOUTOFREACH:
-			return "Destination is out of range.";
+			return "Destination is out of reach.";
 
 		case RETURNVALUE_NOTMOVEABLE:
 			return "You cannot move this object.";
@@ -1040,7 +992,7 @@ const char* getReturnMessage(ReturnValue value)
 			return "You may only use one weapon.";
 
 		case RETURNVALUE_TOOFARAWAY:
-			return "You are too far away.";
+			return "Too far away.";
 
 		case RETURNVALUE_FIRSTGODOWNSTAIRS:
 			return "First go downstairs.";
@@ -1104,7 +1056,7 @@ const char* getReturnMessage(ReturnValue value)
 			return "You are not allowed to shoot directly on players.";
 
 		case RETURNVALUE_NOTENOUGHLEVEL:
-			return "Your level is too low.";
+			return "You do not have enough level.";
 
 		case RETURNVALUE_NOTENOUGHMAGICLEVEL:
 			return "You do not have enough magic level.";
@@ -1118,11 +1070,8 @@ const char* getReturnMessage(ReturnValue value)
 		case RETURNVALUE_YOUAREEXHAUSTED:
 			return "You are exhausted.";
 
-		case RETURNVALUE_YOUCANNOTUSEOBJECTSTHATFAST:
-			return "You cannot use objects that fast.";
-
 		case RETURNVALUE_CANONLYUSETHISRUNEONCREATURES:
-			return "You can only use it on creatures.";
+			return "You can only use this rune on creatures.";
 
 		case RETURNVALUE_PLAYERISNOTREACHABLE:
 			return "Player is not reachable.";
@@ -1134,7 +1083,7 @@ const char* getReturnMessage(ReturnValue value)
 			return "This action is not permitted in a protection zone.";
 
 		case RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER:
-			return "You may not attack this person.";
+			return "You may not attack this player.";
 
 		case RETURNVALUE_YOUMAYNOTATTACKTHISCREATURE:
 			return "You may not attack this creature.";
@@ -1155,10 +1104,10 @@ const char* getReturnMessage(ReturnValue value)
 			return "You need a premium account.";
 
 		case RETURNVALUE_YOUNEEDTOLEARNTHISSPELL:
-			return "You must learn this spell first.";
+			return "You need to learn this spell first.";
 
 		case RETURNVALUE_YOURVOCATIONCANNOTUSETHISSPELL:
-			return "You have the wrong vocation to cast this spell.";
+			return "Your vocation cannot use this spell.";
 
 		case RETURNVALUE_YOUNEEDAWEAPONTOUSETHISSPELL:
 			return "You need to equip a weapon to use this spell.";
@@ -1227,18 +1176,3 @@ int64_t OTSYS_TIME()
 	return std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch()).count();
 }
 
-SpellGroup_t stringToSpellGroup(std::string value)
-{
-	std::string tmpStr = asLowerCaseString(value);
-	if (tmpStr == "attack" || tmpStr == "1") {
-		return SPELLGROUP_ATTACK;
-	} else if (tmpStr == "healing" || tmpStr == "2") {
-		return SPELLGROUP_HEALING;
-	} else if (tmpStr == "support" || tmpStr == "3") {
-		return SPELLGROUP_SUPPORT;
-	} else if (tmpStr == "special" || tmpStr == "4") {
-		return SPELLGROUP_SPECIAL;
-	}
-
-	return SPELLGROUP_NONE;
-}

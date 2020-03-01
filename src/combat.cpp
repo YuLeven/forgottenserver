@@ -302,6 +302,10 @@ ReturnValue Combat::canDoCombat(Creature* attacker, Creature* target)
 		}
 
 		if (const Player* attackerPlayer = attacker->getPlayer()) {
+			if (attackerPlayer->getAccount() == targetPlayer->getAccount()) {
+				return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER;
+			}
+
 			if (attackerPlayer->hasFlag(PlayerFlag_CannotAttackPlayer)) {
 				return RETURNVALUE_YOUMAYNOTATTACKTHISPLAYER;
 			}
